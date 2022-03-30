@@ -53,25 +53,27 @@ $no = 1;
         </thead>
         
         <?php
-        $row = mysqli_fetch_assoc($data);
-        if(count($row)==0){
-            echo '<tr><td colspan="4">No data</td></tr>';
-        }else{
+        if(mysqli_num_rows($data) > 0){
           while($row = mysqli_fetch_assoc($data)){
-              echo '<tbody>';
-              echo '<tr>';
-              echo '<td>'.$no.'</td>';
-              echo '<td>'.$row['username'].'</td>';
-              echo '<td>'.$row['email'].'</td>';
-              echo '<td>';
-              echo '<a type="button" class="btn btn-primary" href="edit.php?id='.$row['id'].'">Edit</a>';
-              echo '<a type="button" class="btn btn-danger" onclick="return confirm(\'Really delete?\')" href="delete.php?id='.$row['id'].'">Delete</a>';
-              echo '</td>';
-              echo '</tr>';
-              echo '</tbody>';
-              $no ++;
-          }
-        }
+            echo '<tbody>';
+            echo '<tr>';
+            echo '<td>'.$no.'</td>';
+            echo '<td>'.$row['username'].'</td>';
+            echo '<td>'.$row['email'].'</td>';
+            echo '<td>';
+            echo '<a type="button" class="btn btn-primary" href="edit.php?id='.$row['id'].'">Edit</a>';
+            echo '<a type="button" class="btn btn-danger" onclick="return confirm(\'Really delete?\')" href="delete.php?id='.$row['id'].'">Delete</a>';
+            echo '</td>';
+            echo '</tr>';
+            echo '</tbody>';
+            $no ++;
+            }
+          }else{
+                echo '<tr>';
+                echo '<td class="justify-content-center">No data</td>';
+                echo '</tr>';
+            }
+        
         ?>
         
     
