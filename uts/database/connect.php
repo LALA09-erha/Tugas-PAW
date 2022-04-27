@@ -12,4 +12,8 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> 678570841072775bd7d76f7b7fd84e67dbdab8b2
