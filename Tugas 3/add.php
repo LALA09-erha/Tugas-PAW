@@ -1,34 +1,5 @@
 <?php
 session_start();
-require('database/connect.php');
-$id = $_GET['id'];
-$sql = "SELECT * FROM tbl_153 WHERE id = $id";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($result);
-
-#update data to database
-if(isset($_POST['submit'])){
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-
-    if($row['username'] == $username && $row['email'] == $email){
-        $_SESSION['message'] = "No changes made";
-        header('Location: index.php');
-        exit();
-    }else if(strlen($username) < 5){
-        $_SESSION['message'] = 'Username must be at least 5 characters';
-        header("location: edit.php?id=$id");
-        exit();
-    }
-    $sql2 = "UPDATE tbl_153 SET username = '$username', email = '$email' WHERE id = $id";
-    if ($conn->query($sql2) === TRUE) {
-        $_SESSION['message'] = "User updated successfully";
-        header('Location: index.php');
-        exit();
-    } else {
-        echo "Error: " . $sql2 . "<br>" . $conn->error;
-    }
-}
 ?>
 
 <!doctype html>
@@ -41,7 +12,7 @@ if(isset($_POST['submit'])){
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Edit Data User</title>
+    <title>Add Data User</title>
   </head>
   <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -60,24 +31,27 @@ if(isset($_POST['submit'])){
   </div>
 </nav>
 <div class="container">
-    <h1>Edit Daya User</h1>
+    <h1>Add Users</h1>
     <?php
     if(!empty($_SESSION['message'])){
         echo '<div class="alert alert-warning" role="alert">'.$_SESSION['message'].'</div>';
         unset($_SESSION['message']);
     }
     ?>
-    <form method="POST" action="">
-        <input type="number" hidden value="<?php $row['id']?>" name="id" id='id'>
+    <form method="POST" action="proses.php">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" name="name" required placeholder="Input Name">
+        </div>
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" id="username" name="username" value="<?php echo $row['username']?>" required>
+          <input type="text" class="form-control" id="username" name="username" required  placeholder="Input Userame">
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" name="email" value="<?php echo $row['email']?>" required>
+            <input type="email" class="form-control" id="email" name="email"  required  placeholder="Input Email">
         </div>
-        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
 

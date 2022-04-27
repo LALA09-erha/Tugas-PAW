@@ -1,7 +1,10 @@
 <?php
 session_start();
-?>
+require('database/connect.php');
+$data = mysqli_query($conn, "SELECT * FROM tbl_153");
+$no = 1;
 
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -12,7 +15,7 @@ session_start();
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Add Data User</title>
+    <title>Admin</title>
   </head>
   <body>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -31,24 +34,52 @@ session_start();
   </div>
 </nav>
 <div class="container">
-    <h1>Add Users</h1>
+    <h1>Data Users</h1>
     <?php
     if(!empty($_SESSION['message'])){
-        echo '<div class="alert alert-warning" role="alert">'.$_SESSION['message'].'</div>';
+        echo '<div class="alert alert-primary" role="alert">'.$_SESSION['message'].'</div>';
         unset($_SESSION['message']);
     }
     ?>
-    <form method="POST" action="proses.php">
-        <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" id="username" name="username" required>
-        </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" name="email"  required>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <a type="button" class="btn btn-primary" href="add.php">Add User</a>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Action</th>
+            </tr>
+        </thead>
+        
+        <?php
+        if(mysqli_num_rows($data) > 0){
+          while($row = mysqli_fetch_assoc($data)){
+            echo '<tbody>';
+            echo '<tr>';
+            echo '<td>'.$no.'</td>';
+            echo '<td>'.$row['name'].'</td>';
+            echo '<td>'.$row['username'].'</td>';
+            echo '<td>'.$row['email'].'</td>';
+            echo '<td>';
+            echo '<a type="button" class="btn btn-primary m-1" href="edit.php?id='.$row['id'].'">Edit</a>';
+            echo '<a type="button" class="btn btn-danger" onclick="return confirm(\'Really delete?\')" href="delete.php?id='.$row['id'].'">Delete</a>';
+            echo '</td>';
+            echo '</tr>';
+            echo '</tbody>';
+            $no ++;
+            }
+          }else{
+                echo '<tr>';
+                echo '<td class="justify-content-center">No data</td>';
+                echo '</tr>';
+            }
+        
+        ?>
+        
+    
+    </table>
 </div>
 
 

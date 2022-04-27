@@ -3,24 +3,19 @@ session_start();
 // redirect to database\connect.php
 require('database/connect.php');
 
-$username = $_POST['username'];
+$name = $_POST['name'];
 $email = $_POST['email'];
 #check data on database
-$check_username = "SELECT * FROM tbl_153 WHERE username = '$username' OR email = '$email'";
-$result = mysqli_query($conn, $check_username);
+$check = "SELECT * FROM tbl_153 WHERE  email_153 = '$email'";
+$result = mysqli_query($conn, $check);
 #check length of data
-if(strlen($username) < 5){
-    $_SESSION['message'] = 'Username must be at least 5 characters';
-    header("location: add.php");
-    exit();
-}
 
 if(mysqli_num_rows($result) > 0){
-    $_SESSION['message'] = "Username Or Email already exist";
+    $_SESSION['message'] = "Email already exist";
     header('Location: add.php');
 }else{
 # Insert data to database
-    $sql = "INSERT INTO tbl_153 (username, email) VALUES ('$username', '$email')";
+    $sql = "INSERT INTO tbl_153 (nama_153, email_153) VALUES ('$name', '$email')";
     if ($conn->query($sql) === TRUE) {
         $_SESSION['message'] = "New User created successfully";
         header('Location: index.php');
